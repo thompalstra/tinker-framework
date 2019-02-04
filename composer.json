@@ -1,5 +1,5 @@
 {
     "require": {
-        "ioxo/tinker-base": "dev-master"
+        "ioxo/tinker-base": "dev-develop"
     }
 }
