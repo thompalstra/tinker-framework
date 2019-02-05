@@ -10,16 +10,23 @@ class Renderer extends \Hub\Base\Base
     public static function output($dir, $fp, $data)
     {
         $smarty = new Smarty();
-        $smarty->setTemplateDir($dir);
-        $smarty->setCompileDir(Frame::path(['storage', 'cache', 'smarty', 'compilation_cache']));
-        $smarty->setCacheDir(Frame::path(['storage', 'cache', 'smarty', 'cache']));
 
         $smarty->caching = true;
 
-        $smarty->assign($data);
+        return $smarty->setTemplateDir($dir)
+            ->setCompileDir(self::getCompileDir())
+            ->setCacheDir(self::getCacheDir())
+            ->assign($data)
+            ->fetch(Frame::path([$dir, $fp]));
+    }
 
-        $path = Frame::path([$dir, $fp]);
+    public static function getCompileDir()
+    {
+        return Frame::path(['storage', 'cache', 'smarty', 'compilation_cache']);
+    }
 
-        $smarty->display("{$path}");
+    public static function getCacheDir()
+    {
+        return Frame::path(['storage', 'cache', 'smarty', 'cache']);
     }
 }

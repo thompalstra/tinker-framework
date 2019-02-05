@@ -12,7 +12,7 @@ class HomeController extends \Hub\Base\Controller
 
     public function twig()
     {
-        return View::render("twig", ['title' => 'Twig page']);
+        return View::render("template", ['title' => 'Twig page']);
     }
 
     public function smarty()
