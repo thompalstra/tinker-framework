@@ -20,7 +20,7 @@ class View extends Base
         return self::$engines;
     }
 
-    public static function render($name, $data)
+    public static function render($name, array $data = [])
     {
         $viewPath = Frame::$app->request->getViewPath();
         $layoutPath = Frame::$app->request->getLayoutPath();
@@ -51,6 +51,7 @@ class View extends Base
     public static function make($name, $data = [])
     {
         $dir = Frame::path(['storage', 'views']);
+        $name = str_replace(["\\", "/"], DIRECTORY_SEPARATOR, $name);
         foreach(self::getEngines() as $renderer => $extensions){
             foreach($extensions as $extension){
                 $path = Frame::path([$dir, $name]);
@@ -64,6 +65,7 @@ class View extends Base
                 }
             }
         }
+        echo "{$dir}\\{$name}";
         return "unable to render file: '{$name}'";
     }
 }

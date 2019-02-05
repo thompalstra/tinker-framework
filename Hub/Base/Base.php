@@ -3,16 +3,31 @@ namespace Hub\Base;
 
 class Base
 {
-    public function __get($key)
+    /**
+     * Gets the value for the provided key
+     *
+     * @var string $key
+     */
+    public function __get(string $key)
     {
         return $this->$key;
     }
 
-    public function __set($key, $value)
+    /**
+     * Sets the value for the provided key
+     *
+     * @var string $key
+     */
+    public function __set(string $key, $value)
     {
         $this->$key = $value;
     }
 
+    /**
+     * Intercepts the __call function and check if the method has a prefix 'get' or 'set'
+     *
+     * @var string $key
+     */
     public function __call($method, $arg)
     {
         if(strlen($method) > 3) {

@@ -5,6 +5,8 @@ use Frame;
 
 class Route extends Base
 {
+    public static $prefixes = [];
+
     public function __construct($path, $parameters)
     {
         $this->setPath($path);
@@ -13,6 +15,14 @@ class Route extends Base
 
     public static function get($route, $controller)
     {
+        if(!empty(self::$prefixes)){
+            $prefixes = implode("/", self::$prefixes);
+            if(empty($route)){
+                $route = $prefixes;
+            } else {
+                $route = implode("/", [$prefixes, $route]);
+            }
+        }
         Frame::$app->routes["get"][$route] = $controller;
     }
 
@@ -31,11 +41,11 @@ class Route extends Base
     public static function group(array $options, $closure)
     {
         if(isset($options["prefix"])){
-            self::$prefix = $options["prefix"];
+            self::$prefixes[] = $options["prefix"];
         }
 
         $closure();
 
-        self::$prefix = null;
+        array_pop(self::$prefixes);
     }
 }

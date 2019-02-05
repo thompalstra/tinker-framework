@@ -10,7 +10,7 @@ class Record extends Base
     public $attributes = [];
     public $old_attributes = [];
 
-    public function __construct($options = [], $isNewRecord = true)
+    public function __construct(array $options = [], bool $isNewRecord = true)
     {
         $this->isNewRecord = $isNewRecord;
 
