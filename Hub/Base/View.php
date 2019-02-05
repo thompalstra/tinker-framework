@@ -25,8 +25,22 @@ class View extends Base
         $viewPath = Frame::$app->request->getViewPath();
         $layoutPath = Frame::$app->request->getLayoutPath();
 
-        $layout = Frame::path([$layoutPath, Frame::$app->controller->getLayout()]);
-        $view = Frame::path([$viewPath, $name]);
+        $params = [];
+        if(!empty($layoutPath)){
+            $params[] = $layoutPath;
+        }
+        $params[] =  Frame::$app->controller->getLayout();
+
+        $layout = Frame::path($params);
+
+        $params = [];
+        if(!empty($viewPath)){
+            $params[] = $viewPath;
+        }
+        $params[] = $name;
+
+        $view = Frame::path($params);
+
 
         echo self::make($layout, [
             "content" => self::make($view, $data)
@@ -36,16 +50,17 @@ class View extends Base
 
     public static function make($name, $data = [])
     {
-        $name = "storage/views/{$name}";
+        $dir = Frame::path(['storage', 'views']);
         foreach(self::getEngines() as $renderer => $extensions){
             foreach($extensions as $extension){
-                if(file_exists("{$name}.{$extension}")){
+                $path = Frame::path([$dir, $name]);
+                if(file_exists("{$path}.{$extension}")){
                     preg_match('/(.*)@(.*)/', $renderer, $matches);
 
                     $class = $matches[1];
                     $method = $matches[2];
 
-                    return call_user_func_array([$class, $method], ["{$name}.{$extension}", $data]);
+                    return call_user_func_array([$class, $method], [$dir, "{$name}.{$extension}", $data]);
                 }
             }
         }

@@ -41,10 +41,9 @@ class Application extends Base
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->controller = new Controller();
 
-
-        View::registerEngine("Hub\Blade\Renderer@output", ["blade", "blade.php"]);
-        View::registerEngine("Hub\Twig\Renderer@output", ["twig", "twig.php"]);
-        View::registerEngine("Hub\Http\Renderer@output", ["html", "php"]);
+        foreach($this->config->renderers as $class => $ext){
+            View::registerEngine($class, $ext);
+        }
     }
 
     public function run($request)
