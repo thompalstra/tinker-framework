@@ -11,7 +11,7 @@ class Renderer extends \Hub\Base\Base
     public static function output($dir, $fp, $data)
     {
         $twig = new Twig_Environment(new Twig_Loader_Filesystem($dir), [
-            'cache' => Frame::path(['cache', 'twig', 'compilation_cache'])
+            'cache' => Frame::path(['storage', 'cache', 'twig', 'compilation_cache'])
         ]);
         echo $twig->load($fp)->render($data);
     }
