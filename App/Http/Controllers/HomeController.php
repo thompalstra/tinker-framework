@@ -9,8 +9,14 @@ class HomeController extends \Hub\Base\Controller
     {
         return View::render("index", ['test' => 'Home page']);
     }
+
     public function twig()
     {
-        return View::render("test", ['title' => 'Twig page']);
+        return View::render("twig", ['title' => 'Twig page']);
+    }
+
+    public function smarty()
+    {
+        return View::render("smarty", ['title' => 'Smarty page']);
     }
 }

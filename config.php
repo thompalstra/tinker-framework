@@ -8,8 +8,8 @@ return [
         "password" => ""
     ],
     "renderers" => [
-        "Hub\Blade\Renderer@output" => ["blade.php"],
+        "Hub\Http\Renderer@output" => ["html", "php"],
         "Hub\Twig\Renderer@output" => ["twig.html"],
-        "Hub\Http\Renderer@output" => ["html", "php"]
+        "Hub\Smarty\Renderer@output" => ["tpl"]
     ]
 ];
