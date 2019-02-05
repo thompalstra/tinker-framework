@@ -23,10 +23,45 @@ class HubController extends Controller
         ]);
     }
 
+    public function cli()
+    {
+        return View::render('docs/hub/view', [
+            'items' => $this->getItems(Frame::path(["Hub", "Cli"]))
+        ]);
+    }
+
     public function db()
     {
         return View::render('docs/hub/view', [
             'items' => $this->getItems(Frame::path(["Hub", "Db"]))
+        ]);
+    }
+
+    public function http()
+    {
+        return View::render('docs/hub/view', [
+            'items' => $this->getItems(Frame::path(["Hub", "Http"]))
+        ]);
+    }
+
+    public function queue()
+    {
+        return View::render('docs/hub/view', [
+            'items' => $this->getItems(Frame::path(["Hub", "Queue"]))
+        ]);
+    }
+
+    public function smarty()
+    {
+        return View::render('docs/hub/view', [
+            'items' => $this->getItems(Frame::path(["Hub", "Smarty"]))
+        ]);
+    }
+
+    public function twig()
+    {
+        return View::render('docs/hub/view', [
+            'items' => $this->getItems(Frame::path(["Hub", "Twig"]))
         ]);
     }
 

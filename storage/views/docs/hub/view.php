@@ -10,9 +10,9 @@ use Hub\Base\View;
     }
     .card .code.description{
         white-space: pre-line;
-        /* background: #000; */
-        /* color: #DD8; */
-        /* padding: 20px; */
+        background: #f2f2f2;
+        padding: 1.25rem;
+        border: 1px solid rgba(0,0,0,.125);
     }
 </style>
 <div class="container">
