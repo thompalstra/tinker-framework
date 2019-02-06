@@ -10,7 +10,9 @@ use Hub\Base\View;
         <?=View::make('layouts/main/nav')?>
         <?=View::make('layouts/main/sidebar')?>
 
-        <?=$content?>
+        <main>
+            <?=$content?>
+        </main>
 
         <?=View::make('layouts/main/footer')?>
     </body>

@@ -5,22 +5,42 @@ use Frame;
 
 class View extends Base
 {
-
-    // public static $extensions = ["php", "html", "php.blade", "blade", "twig"];
-
     public static $engines = [];
 
-    public static function registerEngine($engine, $method)
+    /**
+     * Registers a new rendering engine
+     *
+     * View::registerEngine('Hub\Http\Renderer@output', ['html', 'php'])
+     *
+     * @param string $engine The engine to use
+     * @param array $extensions The file extensions the engine supports
+     */
+    public static function registerEngine(string $engine = "test", array $extensions = [])
     {
-        self::$engines[$engine] = $method;
+        self::$engines[$engine] = $extensions;
     }
 
+    /**
+     * Returns a collection of registered renderer engines
+     *
+     * @return array $engines
+     */
     public static function getEngines()
     {
         return self::$engines;
     }
 
-    public static function render($name, array $data = [])
+    /**
+     * Outputs a view and layout based on the controller's layout and
+     * provided view '$name' and exits the script.
+     *
+     * View::render('index', array('username' => 'admin'))
+     *
+     * @param string $name The view to render
+     * @param array $data The data to pass to the view
+     * @return html
+     */
+    public static function render(string $name, array $data = [])
     {
         $viewPath = Frame::$app->request->getViewPath();
         $layoutPath = Frame::$app->request->getLayoutPath();
@@ -48,6 +68,14 @@ class View extends Base
         exit();
     }
 
+    /**
+     * Outputs a single view based on the view '$name'
+     *
+     * View::make('contact', array('myvar'=>'myval'))
+     *
+     * @param string $name The view to render
+     * @param array $data The data to pass to the view
+     */
     public static function make($name, $data = [])
     {
         $dir = Frame::path(['storage', 'views']);

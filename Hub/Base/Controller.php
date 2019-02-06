@@ -7,23 +7,46 @@ class Controller extends Base
 {
     protected $layout = "main";
 
+    /**
+     * Runs a 404 error
+     *
+     * @param string $message message to be displayed
+     */
     public function error($message)
     {
         http_response_code(404);
         echo "{$message}"; exit;
     }
 
+    /**
+     * Runs the provided 'method' with its arguments
+     *
+     * $productController->run('view', array(453, 2));
+     * public function view($productId, $categoryId) { ... }
+     *
+     * @param string $method method to call like 'index' or 'contact'
+     * @param array $arg array of arguments to apply to the method
+     * @param string html result
+     */
     public function run($method, $arg)
     {
         if(method_exists($this, $method)){
             $params = $this->parameters($method, $arg);
-            call_user_func_array([$this, $method], $params);
+            return call_user_func_array([$this, $method], $params);
         } else {
             $class = get_called_class();
             return $this->run('error', ['message' => "{$class}::{$method} does not exist"]);
         }
     }
 
+    /**
+     * Checks to see if the provided arguments '$arg' matches the required variables
+     * available in the provided method '$method'
+     *
+     * @param string $method The method to call like 'index' or 'contact'
+     * @param array $arg An array of arguments available
+     * @return array $params An array of arguments to apply to the method
+     */
     public function parameters($method, $arg)
     {
         $reflectionMethod = new ReflectionMethod($this, $method);
@@ -49,6 +72,11 @@ class Controller extends Base
         return $params;
     }
 
+    /**
+     * Redirects the client and exits the current script
+     *
+     * @param string $url the url to redirect to
+     */
     public function redirect($url)
     {
         header("Location: {$url}"); exit;

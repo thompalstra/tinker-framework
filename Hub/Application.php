@@ -19,6 +19,11 @@ class Application extends Base
         "post" => [],
         "put" => []
     ];
+    public $names = [
+        "get" => [],
+        "post" => [],
+        "put" => []
+    ];
     public $db;
     public $queues = [];
 

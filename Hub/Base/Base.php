@@ -4,9 +4,10 @@ namespace Hub\Base;
 class Base
 {
     /**
-     * Gets the value for the provided key
+     * Overrides the '__get' method
      *
-     * @var string $key
+     * @param string $key
+     * @return mixed
      */
     public function __get(string $key)
     {
@@ -14,9 +15,9 @@ class Base
     }
 
     /**
-     * Sets the value for the provided key
+     * Overrides the '__set' method
      *
-     * @var string $key
+     * @param string $key
      */
     public function __set(string $key, $value)
     {
@@ -24,9 +25,11 @@ class Base
     }
 
     /**
-     * Intercepts the __call function and check if the method has a prefix 'get' or 'set'
+     * Overrides the '__call' function
      *
-     * @var string $key
+     * @param string $method
+     * @param array $arg
+     * @return mixed
      */
     public function __call($method, $arg)
     {
@@ -48,10 +51,17 @@ class Base
         }
     }
 
-    public static function __callStatic($method, $arg)
+    /**
+     * Overrides the '__get' method
+     *
+     * @param string $method
+     * @param array $arguments
+     * @return mixed
+     */
+    public static function __callStatic($method, $arguments)
     {
         if(method_exists(self::class, $method)){
-            call_user_func_array([self::class, $method], $arg);
+            call_user_func_array([self::class, $method], $arguments);
         } else {
             echo "not implemented __callStatic"; exit;
         }

@@ -1,5 +1,7 @@
 <?php
 use Hub\Base\View;
+use Hub\Base\Route;
+
 ?>
 <style>
     a:focus + .card{
@@ -44,7 +46,7 @@ use Hub\Base\View;
                 ?>
 
                 <a id="<?=$reflect->getName()?>" href=""></a>
-                <div class="card mt-4">
+                <div class="card my-4">
                     <div class="card-body">
                         <h5 class="card-title"><?=$key?></h5>
                         <h6 class="card-subtitle mb-2 text-muted">
@@ -74,6 +76,13 @@ use Hub\Base\View;
                         <?php foreach(get_class_methods($item) as $method) : ?>
                             <?php
                             $reflectionMethod = new \ReflectionMethod($item, $method);
+
+                            $declaringClass = $reflectionMethod->getDeclaringClass();
+
+                            if($declaringClass->getName() !== $item){
+                                continue;
+                            }
+
                             $docComment = $reflectionMethod->getDocComment();
 
                             $visibility = '';
@@ -82,50 +91,57 @@ use Hub\Base\View;
                             $args = [];
 
                             if($reflectionMethod->isPrivate()){
-                                $function[] = 'private';
+                                $function[] = '<span style="color: purple">private</span>';
                             } elseif($reflectionMethod->isProtected()){
-                                $function[] = 'protected';
+                                $function[] = '<span style="color: purple">protected</span>';
                             } elseif($reflectionMethod->isPublic()){
-                                $function[] = 'public';
+                                $function[] = '<span style="color: purple">public</span>';
                             }
                             if($reflectionMethod->isStatic()){
-                                $function[] = 'static';
+                                $function[] = '<span style="color: purple">static</span>';
                             }
-                            $function[] = 'function';
-                            $function[] = $method;
+                            $function[] = '<span style="color: purple">function</span>';
+                            $function[] = "<span style='color: blue'>$method</span>";
                             $function = implode(' ', $function);
 
                             foreach($reflectionMethod->getParameters() as $param){
                                 $reflectionParameter = new \ReflectionParameter([$item, $method], $param->getName());
+
                                 $arg = [];
 
                                 $type = null;
 
                                 if($reflectionParameter->hasType()){
                                     $type = $reflectionParameter->getType();
-                                    $arg[] = $type;
+                                    $arg[] = "<span style='color: purple'>$type</span>";
                                 }
 
                                 $paramName = $param->getName();
                                 $isOptional = $param->isOptional();
                                 $paramDefaultValue = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
 
-                                $arg[] = '$' . $param->getName();
+                                $arg[] =  '<span style="color: #dd0000">$' . $paramName . '</span>';
                                 if($paramDefaultValue){
-                                    if($type && $type == 'bool'){
-                                        $arg[] = '= <var>' . (($paramDefaultValue) ? 'true' : 'false') . "</var>";
-                                    } else {
-                                        $arg[] = "= <var>" . strval($paramDefaultValue) . "</var>";
+                                    switch($type){
+                                        case "bool":
+                                            $paramDefaultValue = ($paramDefaultValue == true) ? 'true' : 'false';
+                                            $arg[] = "= <span style='color: yellow'>$paramDefaultValue</span>";
+                                        break;
+                                        case "string":
+                                            $arg[] = "= <span style='color: green'>" . '"' . $paramDefaultValue . '"' . "</span>";
+                                        break;
+                                        default:
+                                            $arg[] = "= <span style='color: blue'>$paramDefaultValue</span>";
+                                        break;
                                     }
                                 }
                                 $args[] = implode(" ", $arg);
                             }
                             $args = implode(", ", $args);
                             ?>
-                            <p class="card-text"><?=$function?>(<?=$args?>)</p>
-
+                            <p class="card-text my-4"><?=$function?>(<?=$args?>)</p>
                             <?php if(strlen($docComment) > 0) : ?>
-                                <pre class="code description"><?=$docComment?></pre>
+                                <pre class="code description mb-0"><?=$docComment?></pre>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </div>

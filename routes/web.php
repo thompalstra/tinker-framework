@@ -3,12 +3,12 @@ use Hub\Base\Route;
 Route::get("", "HomeController@index");
 Route::get("twig", "HomeController@twig");
 Route::get("smarty", "HomeController@smarty");
-Route::get("info/services/{service}", "Info\ServicesController@service");
+Route::get("info/services/{service}", "Info\ServicesController@service", ['name' => 'info.services.view']);
 
 Route::get("queue/request", "QueueController@request");
 
-Route::group(["prefix" => "docs"], function(){
-    Route::get("", "DocsController@index");
+Route::group(["prefix" => "docs", "name" => "docs."], function(){
+    Route::get("", "DocsController@index", ['name' => 'index']);
     Route::group(["prefix" => "hub"], function(){
         Route::get("", "Docs/HubController@index");
         Route::get("base", "Docs/HubController@base");
