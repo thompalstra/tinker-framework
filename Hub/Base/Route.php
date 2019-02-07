@@ -32,7 +32,7 @@ class Route extends Base
                 }
 
                 if(strpos($route, '{') > -1){
-                    Frame::$app->controller->error("Missing required parameters for route {$name}");
+                    return Frame::$app->controller->error(new Exception("Unprocessable Entity", 422));
                 }
 
                 return $route;
@@ -120,6 +120,15 @@ class Route extends Base
      */
     public static function group(array $options, $closure)
     {
+        if(isset($options["host"]) && isset($_SERVER["HTTP_HOST"])){
+            $host = $options["host"];
+
+            preg_match("/{$host}/", $_SERVER["HTTP_HOST"], $matches);
+
+            if(empty($matches)){
+                return;
+            }
+        }
         if(isset($options["prefix"])){
             self::$prefixes[] = $options["prefix"];
         }

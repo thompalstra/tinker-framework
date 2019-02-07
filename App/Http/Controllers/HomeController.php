@@ -7,7 +7,7 @@ class HomeController extends \Hub\Base\Controller
 {
     public function index()
     {
-        return View::render("index", ['test' => 'Home page']);
+        return View::render("index", ['title' => 'Home page']);
     }
 
     public function twig()

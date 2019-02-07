@@ -2,6 +2,7 @@
 namespace Hub\Base;
 
 use Frame;
+use Exception;
 
 class Request extends Base implements RequestInterface
 {
@@ -56,7 +57,7 @@ class Request extends Base implements RequestInterface
                 return [Frame::path([$controller]), $this->getParameters()];
             }
         }
-        return ["HomeController@error", ["Route does not exist"]];
+        return Frame::$app->controller->error(new Exception("Page not found", 404));
     }
 
     /**

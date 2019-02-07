@@ -86,13 +86,13 @@ class Application extends Base
         $controller = $matches[1];
         $method = $matches[2];
 
-        $ns = Frame::ns([$this->request->getControllerPath(), $controller]);
+        $class = Frame::ns([$this->request->getControllerPath(), $controller]);
 
-        if(class_exists("{$ns}")){
-            Frame::$app->controller = new $ns();
-            Frame::$app->controller->run($method, $route[1]);
+        if(class_exists("{$class}")){
+            Frame::$app->controller = new $class();
+            return Frame::$app->controller->run($method, $route[1]);
         } else {
-            Frame::$app->controller->run("error", ['message' => "{$ns} does not exist"]);
+            return Frame::$app->controller->error(new Exception("Not implemented", 501));
         }
     }
 }

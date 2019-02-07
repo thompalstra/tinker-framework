@@ -1,7 +1,10 @@
 <?php
 namespace Hub\Base;
 
+use Exception;
 use ReflectionMethod;
+
+use Hub\Base\View;
 
 class Controller extends Base
 {
@@ -12,10 +15,10 @@ class Controller extends Base
      *
      * @param string $message message to be displayed
      */
-    public function error($message)
+    public function error($exception)
     {
-        http_response_code(404);
-        echo "{$message}"; exit;
+        http_response_code($exception->getCode());
+        View::render('error', ['exception' => $exception]);
     }
 
     /**
@@ -35,7 +38,7 @@ class Controller extends Base
             return call_user_func_array([$this, $method], $params);
         } else {
             $class = get_called_class();
-            return $this->run('error', ['message' => "{$class}::{$method} does not exist"]);
+            return Frame::$app->controller->error(new Exception("Not implemented", 501));
         }
     }
 
@@ -66,7 +69,7 @@ class Controller extends Base
             } elseif($isOptional && isset($paramDefaultValue)){
                 $params[] = $paramDefaultValue;
             } else {
-                return $this->run('error', ['message' => "Missing required parameters '{$paramName}'"]);
+                return $this->error(new Exception("Unprocessable Entity", 422));
             }
         }
         return $params;
