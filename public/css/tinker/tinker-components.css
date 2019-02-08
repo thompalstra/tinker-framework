@@ -1,0 +1,43 @@
+.nav.nav-default{
+
+}
+
+.nav.nav-default > li{
+    position: relative;
+}
+
+.nav.nav-default ul{
+    background: white;
+    list-style: none;
+    padding: 0;
+}
+
+.nav.nav-default li span{
+    display: inline-block;
+    padding: .5rem 1rem;
+}
+
+.nav.nav-default li > ul{
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+.nav.nav-default li:hover > ul{
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.nav.nav-default > li > ul,
+.nav.nav-default li > ul{
+    position: absolute;
+}
+
+.nav.nav-default > li > ul{
+    top: 100%;
+    left: 0;
+}
+.nav.nav-default > li li > ul{
+    top: 0;
+    left: 100%;
+}

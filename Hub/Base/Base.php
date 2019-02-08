@@ -66,4 +66,15 @@ class Base
             echo "not implemented __callStatic"; exit;
         }
     }
+
+    public static function getClass()
+    {
+        return get_called_class();
+    }
+
+    public static function getShortClass()
+    {
+        $ex = explode("\\", get_called_class());
+        return array_pop($ex);
+    }
 }

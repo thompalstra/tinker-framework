@@ -9,8 +9,6 @@ use Hub\Base\View;
 
 class HubController extends Controller
 {
-
-
     public function index()
     {
         return View::render('docs/hub/index');

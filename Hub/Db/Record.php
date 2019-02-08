@@ -34,17 +34,6 @@ class Record extends Base
         }
     }
 
-    public static function getClass()
-    {
-        return get_called_class();
-    }
-
-    public static function getShortClass()
-    {
-        $ex = explode("\\", get_called_class());
-        return array_pop($ex);
-    }
-
     public static function getTable()
     {
         $class = self::getClass();

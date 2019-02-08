@@ -1,5 +1,7 @@
 <?php
 
+use Hub\Base\Route;
+
 class Frame extends \Hub\Base\Base
 {
     public static $app;
@@ -23,5 +25,12 @@ class Frame extends \Hub\Base\Base
     public static function root()
     {
         return self::$app->root;
+    }
+
+    public static function routes($which)
+    {
+        if(method_exists(self::class, $which)){
+            self::$which();
+        }
     }
 }
